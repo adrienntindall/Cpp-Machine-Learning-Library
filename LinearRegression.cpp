@@ -1,4 +1,5 @@
 #include "LinearRegression.h"
+#include <cstdlib>
 
 LinearRegression::LinearRegression() {
 	m = 0;
@@ -9,13 +10,13 @@ LinearRegression::LinearRegression() {
 LinearRegression::LinearRegression(int features) {
 	m = 0;
 	n = features;
-	initTheat();
+	initTheta();
 }
 
 LinearRegression::LinearRegression(double a) {
 	m = 0;
 	n = 2;
-	initTheat();
+	initTheta();
 	alpha = a;
 }
 
@@ -23,20 +24,37 @@ LinearRegression::LinearRegression(int f, double a) {
 	m = 0;
 	n = f;
 	alpha = a;
-	initTheat();
+	initTheta();
 }
 
 LinearRegression::~LinearRegression() {
 	
 }
 
-void LinearRegression::train(Matrix X) {
+void LinearRegression::train(Matrix X, Matrix y) {
 	m = X.getRows();
-	theta = theta - alpha/m*(h(X) - y) * X;
+	theta = theta - (alpha/m)*(h(X) - y) * X;
 }
 
-void LinearRegression::trainNormal(Matrix X) {
-	theta = (~X*X).inverse() * ~X * ;
+void LinearRegression::train(Matrix X, Matrix y, double lambda) {
+	m = X.getRows();
+	theta = theta*(1-alpha*lambda/m) - (alpha/m)*(h(X) - y) * X;
+}
+
+void LinearRegression::trainNormal(Matrix X, Matrix y) {
+	theta = (~X*X).inverse() * ~X * y;
+}
+
+void LinearRegression::trainNormal(Matrix X, Matrix y, double lambda) {
+	theta = (~X*X + lambda*(identity(n+1).set(0,0,0))).inverse() * ~X * y;
+}
+
+double LinearRegression::test(Matrix X, Matrix y) {
+	Matrix prd = predict(X);
+}
+
+Matrix LinearRegression::predict(Matrix X) {
+	//do later
 }
 
 void LinearRegression::initTheta() {

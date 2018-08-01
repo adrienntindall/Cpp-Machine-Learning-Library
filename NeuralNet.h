@@ -1,3 +1,6 @@
+#ifndef NN_H
+#define NN_H
+
 #include "Matrix.h"
 #include <string>
 
@@ -30,5 +33,4 @@ class NeuralNet {
 		
 };
 
-double sigmoid(double x);
-double* randomize(int length);
+#endif /*NN_H*/

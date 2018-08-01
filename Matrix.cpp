@@ -1,8 +1,10 @@
 #include "Matrix.h"
+#include "MiscFunctions.h"
 #include <iostream>
 #include <math.h>
-#include <stdexcept>
+#include <fstream>
 
+//Default constructor
 Matrix::Matrix() {
 	rows = 1;
 	cols= 1;
@@ -13,6 +15,7 @@ Matrix::Matrix() {
 	values[0][0] = 0;
 }
 
+//Initializes Matrix as a row x col matrix with each cell containing the default value 0
 Matrix::Matrix(int row, int col) {
 	rows = row;
 	cols = col;
@@ -25,6 +28,7 @@ Matrix::Matrix(int row, int col) {
 	}
 }
 
+//Initializes Matrix as a row x col matrix with each cell containing values from unwrapped double* data
 Matrix::Matrix(int row, int col, double* data) {
 	int n = 0;
 	rows = row;
@@ -39,36 +43,87 @@ Matrix::Matrix(int row, int col, double* data) {
 	}	
 }
 
+//Initializes Matrix as a row x col matrix with corresponding values from data
 Matrix::Matrix(int row, int col, double** data) {
 	values = data;
 	rows = row;
 	cols = col;	
 }
 
+//Read in a file made with Matrix.toFile()
+Matrix::Matrix(std::string file) {
+	std::ifstream in;
+	in.open(file);
+	std::string temp;
+	getline(in, temp, ' ');
+	rows = std::stoi(temp);
+	getline(in, temp, '\n');
+	cols = std::stoi(temp);
+	values = new double*[rows];
+	for(int x = 0; x < rows; x++) {
+		values[x] = new double[cols];
+		for(int y = 0; y < cols; y++) {
+			if(y != cols-1) getline(in, temp, ' ');
+			else getline(in, temp, '\n');
+			values[x][y] = std::stod(temp);
+		}
+	}
+	in.close();
+}
+
+//Copy constructor
+Matrix::Matrix(const Matrix& m) {
+	rows = m.rows;
+	cols = m.cols;
+	values = new double*[rows];
+	for(int x = 0; x < rows; x++) {
+		values[x] = new double[cols];
+		for(int y = 0; y < cols; y++) {
+			values[x][y] = m.values[x][y];
+		}
+	}
+}
+
+//Destructor
 Matrix::~Matrix() {
 	delete[] values;
 }
 
-void Matrix::set(int x, int y, double val) {
-	values[x][y] = val;
+//Sets the value of cell (x, y) with val and returns the matrix
+Matrix Matrix::set(int x, int y, double val) {
+	if(!(x < 0 || y < 0 || x >= rows || y >= cols))
+		values[x][y] = val;
+	else
+		std::cout << "Error: position " << x << ", " << y << " is out of bounds of the matrix." << std::endl; 
+	return *this;
 }
 
+//Sets the row at the specified position loc to the value contained in r
 void Matrix::setRow(double* r, int loc) {
-	values[loc] = r;
+	if(!(loc < 0 || loc >= rows))
+		values[loc] = r;
+	else
+		std::cout << "Error: trying to set row " << loc << " in matrix, which is out of bounds" << std::endl;
 }
 
+//Sets the column at the specified poisiton loc to the value contained in c
 void Matrix::setCol(double* c, int loc) {
-	for(int x = 0; x < rows; x++) {
-		values[x][loc] = c[x];
-	}
+	if(!(loc < 0 || loc >= cols))
+		for(int x = 0; x < rows; x++) {
+			values[x][loc] = c[x];
+		}
+	else
+		std::cout << "Error: trying to set column " << loc << " in matrix, which is out of bounds" << std::endl;
 }
 
+//Replaces a section of rows of the Matrix with m starting at loc
 void Matrix::setRow(Matrix m, int loc) {
 	for(int x = 0; x < m.getRows(); x++) {
 		values[loc+x] = m.getRow(x);
 	}
 }
 
+//Replaces a section of columns of the Matrix with m starting at loc
 void Matrix::setCol(Matrix m, int loc) {
 	for(int y = 0; y < m.getCols(); y++) {
 		for(int x = 0; x < rows; x++) {
@@ -118,7 +173,6 @@ Matrix Matrix::addCol(double* c, int loc) {
 			n++;
 		}
 	}
-	Matrix(cols + 1, rows, newVal).print();
 	std::cout << std::endl;
 	return Matrix(cols + 1, rows, newVal).transpose();
 }
@@ -222,6 +276,7 @@ Matrix Matrix::getRow(int start, int end) {
 	return m;
 }
 
+//Returns a matrix of the columns in the Matrix from start to end-1
 Matrix Matrix::getCol(int start, int end) {
 	Matrix m = Matrix(getRows(), end-start);
 	for(int x = start; x < end; x++) {
@@ -230,10 +285,16 @@ Matrix Matrix::getCol(int start, int end) {
 	return m;
 }
 
+//Returns the value in the Matrix at the position (x, y)
 double Matrix::at(int x, int y) {
+	if(x < 0 || y < 0 || x >= rows || y >= cols) {
+		std::cout << "Error: position (" << x << ", " << y << ") is out of range of the matrix." << std::endl;
+		return 0;
+	}
 	return values[x][y];
 }
 
+//Prints all the values in the Matrix
 void Matrix::print() {
 	for(int x = 0; x < rows; x++) {
 		for(int y = 0; y < cols; y++) {
@@ -243,24 +304,31 @@ void Matrix::print() {
 	}	
 }
 
+//Exports the matrix to a readable file with the name "Filename"
+void Matrix::toFile(std::string fname) {
+	std::ofstream out;
+	out.open(fname);
+	out << rows << ' ' << cols << std::endl;
+	for(int x = 0; x < rows; x++) {
+		for(int y = 0; y < cols; y++) {
+			out << at(x, y) << ' ';
+		}
+		out << std::endl;
+	}
+	out.close();
+}
+
+//Returns whether or not the Matrix is a vector
 bool Matrix::isVector() {
 	return (rows == 1 || cols == 1);
 }
 
+//Returns whether or not the Matrix is a square matrix
 bool Matrix::isSquare() {
 	return (rows == cols);
 }
 
-double Matrix::sum() {
-	double amnt = 0;
-	for(int x = 0; x < rows; x++) {
-		for(int y = 0; y < cols; y++) {
-			amnt += values[x][y];
-		}
-	}
-	return amnt;
-}
-
+//Returns the sum of all the values in the Matrix
 double sum(Matrix m) {
 	double amnt = 0;
 	for(int x = 0; x < m.getRows(); x++) {
@@ -271,10 +339,14 @@ double sum(Matrix m) {
 	return amnt;
 }
 
+//Returns the determinate of a square matrix
 double Matrix::det() {
 	if(!isSquare()) {
 		std::cout << "Error: cannot take the determinate of a non-square matrix." << std::endl;
 		return 0;
+	}
+	if(rows < 2) {
+		std::cout << "Error: cannot take the determinate of a 1 x 1 matrix." << std::endl;
 	}
 	if(rows == 2) {
 		return at(0, 0)*at(1,1) - at(0, 1)*at(1, 0);
@@ -286,6 +358,7 @@ double Matrix::det() {
 	return d;
 }
 
+//Returns the transpose of the Matrix
 Matrix Matrix::transpose() {
 	Matrix m = Matrix(cols, rows);
 	for(int x = 0; x < rows; x++) {
@@ -296,6 +369,7 @@ Matrix Matrix::transpose() {
 	return m;
 }
 
+//Returns the inverse of the Matrix if it is square and if the determinate is not zero
 Matrix Matrix::inverse() {
 	if(!isSquare()) {
 		std::cout << "Error: cannot take the inverse of a non-square matrix." << std::endl;
@@ -316,7 +390,17 @@ Matrix Matrix::inverse() {
 	return m.transpose();
 }
 
+
+//Returns the minor matrix of Matrix centered at position (row, col)
 Matrix Matrix::minor(int row, int col) {
+	if(rows == 1 || cols == 1) {
+		std::cout << "Error: trying to take the minor of a vector." << std::endl;
+		return *this;
+	}
+	if(row < 0 || col < 0 || row >= rows || col >= cols) {
+		std::cout << "Error: trying to take the minor centered at position (" << row << ", " << col << "), which is out of bounds" << std::endl;
+		return *this;
+	}
 	Matrix m = Matrix(rows-1, cols-1);
 	for(int x = 0; x < m.getRows(); x++) {
 		for(int y = 0; y < m.getCols(); y++) {
@@ -326,22 +410,4 @@ Matrix Matrix::minor(int row, int col) {
 		}
 	}
 	return m;
-}
-
-Matrix identity(int size) {
-	Matrix m = Matrix(size, size);
-	for(int x = 0; x < size; x++) {
-		m.set(x, x, 1);
-	}
-	return m;
-}
-
-Matrix log(Matrix m) {
-	m.map(std::log);
-	return m;
-}
-
-Matrix ones(int rows, int cols) {
-	Matrix m = Matrix(rows, cols);
-	return m+1;
 }

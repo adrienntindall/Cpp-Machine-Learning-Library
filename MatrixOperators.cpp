@@ -53,10 +53,6 @@ Matrix Matrix::operator*(const Matrix& m) const {
 	return Matrix(rows, m.cols, temp);
 }
 
-Matrix Matrix::operator=(const Matrix& m) const {
-	return Matrix(m.rows, m.cols, m.values);
-}
-
 Matrix Matrix::operator+(const int& m) const {
 	double* temp = new double[rows*cols];
 	int n = 0;
@@ -106,8 +102,13 @@ Matrix Matrix::operator/(const int& m) const {
 }
 
 Matrix Matrix::operator^(const int& m) const {
-	//implement later
-	return Matrix(rows, cols, values);
+	Matrix ret = Matrix(rows, cols);
+	for(int x = 0; x < rows; x++) {
+		for(int y = 0; y < cols; y++) {
+			ret.set(x, y, pow(values[x][y], m));
+		}
+	}
+	return ret;
 }
 
 Matrix Matrix::operator+(const double& m) const {
@@ -156,6 +157,22 @@ Matrix Matrix::operator/(const double& m) const {
 		}
 	}
 	return Matrix(rows, cols, temp);
+}
+
+Matrix operator+(const double& x, const Matrix&m) {
+	return m + x;
+}
+
+Matrix operator-(const double& x, const Matrix&m) {
+	return -m + x;
+}
+
+Matrix operator*(const double& x, const Matrix&m) {
+	return m * x;
+}
+
+Matrix operator/(const double& x, const Matrix&m) {
+	return m^(-1) * x;
 }
 
 Matrix Matrix::operator+(const float& m) const {

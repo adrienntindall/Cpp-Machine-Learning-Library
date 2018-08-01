@@ -1,5 +1,5 @@
 cls
-g++ main.cpp Matrix.cpp MatrixOperators.cpp NeuralNet.cpp
+g++ main.cpp Matrix.cpp MatrixOperators.cpp NeuralNet.cpp LinearRegression.cpp MiscFunctions.cpp KMeans.cpp GeneticAlgorithm.cpp
 pause
 a
 pause

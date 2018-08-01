@@ -1,6 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include <string>
+
 class Matrix {
 	private:
 		int rows;
@@ -13,12 +15,16 @@ class Matrix {
 		Matrix(int row, int col);
 		Matrix(int row, int col, double* data);
 		Matrix(int row, int col, double** data);
+		Matrix(std::string file);
+		
+		//Copy constructor
+		Matrix(const Matrix& m);
 		
 		//Destructor
 		~Matrix();
 		
 		//Modifier functions
-		void set(int x, int y, double val);
+		Matrix set(int x, int y, double val);
 		void setRow(double* r, int loc);
 		void setCol(double* c, int loc);
 		void setRow(Matrix r, int loc);
@@ -41,6 +47,7 @@ class Matrix {
 		
 		//Other Functions
 		void print();
+		void toFile(std::string file);
 		bool isVector(); //Returns whether or not the matrix is a vector
 		bool isSquare();
 		double sum();
@@ -53,7 +60,7 @@ class Matrix {
 		Matrix operator+(const Matrix& m) const;
 		Matrix operator-(const Matrix& m) const;
 		Matrix operator*(const Matrix& m) const;
-		Matrix operator=(const Matrix& m) const;
+		//Matrix operator=(const Matrix& m);
 		
 		Matrix operator+(const int& x) const;
 		Matrix operator-(const int& x) const;
@@ -75,9 +82,10 @@ class Matrix {
 		Matrix operator-() const; //returns all values * -1
 };
 
-double sum(Matrix m);
-Matrix identity(int size);
-Matrix log(Matrix m);
-Matrix ones(int rows, int cols);
+//More operators...
+Matrix operator+(const double& x, const Matrix&m);
+Matrix operator-(const double& x, const Matrix&m);
+Matrix operator*(const double& x, const Matrix&m);
+Matrix operator/(const double& x, const Matrix&m);
 
 #endif /*MATRIX_H*/

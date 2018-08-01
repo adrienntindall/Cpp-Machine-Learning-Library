@@ -2,6 +2,7 @@
 #define LR_H
 
 #include "Matrix.h"
+#include "MiscFunctions.h"
 
 class LinearRegression {
 	private:
@@ -21,10 +22,14 @@ class LinearRegression {
 		~LinearRegression();
 		
 		//Modifier Functions
-		void trian(Matrix X);
-		void trainNormal(Matrix X);
+		void train(Matrix X, Matrix y);
+		void train(Matrix X, Matrix y, double lambda);
+		void trainNormal(Matrix X, Matrix y);
+		void trainNormal(Matrix X, Matrix y, double lambda);
 		
-		//Accessor Functions
+		//Accessor(?) Functions
+		double test(Matrix X, Matrix y);
+		Matrix predict(Matrix X);
 		
 		//Other Functions
 		void initTheta(); //randomly initializes theta values
