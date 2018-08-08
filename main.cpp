@@ -6,7 +6,7 @@
 #include <math.h>
 #include <time.h>
 
-using namespace std;
+using namespace Metagross;
 
 int main() {
 	const int len = 1000000;
