@@ -93,17 +93,20 @@ Matrix::~Matrix() {
 Matrix Matrix::set(int x, int y, double val) {
 	if(!(x < 0 || y < 0 || x >= rows || y >= cols))
 		values[x][y] = val;
-	else
+	else {
 		std::cout << "Error: position " << x << ", " << y << " is out of bounds of the matrix." << std::endl; 
-	std::exit(EXIT_FAILURE);
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 //Sets the row at the specified position loc to the value contained in r
 void Matrix::setRow(double* r, int loc) {
 	if(!(loc < 0 || loc >= rows))
 		values[loc] = r;
-	else
+	else {
 		std::cout << "Error: trying to set row " << loc << " in matrix, which is out of bounds" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 //Sets the column at the specified poisiton loc to the value contained in c
@@ -112,23 +115,35 @@ void Matrix::setCol(double* c, int loc) {
 		for(int x = 0; x < rows; x++) {
 			values[x][loc] = c[x];
 		}
-	else
+	else {
 		std::cout << "Error: trying to set column " << loc << " in matrix, which is out of bounds" << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
 }
 
 //Replaces a section of rows of the Matrix with m starting at loc
 void Matrix::setRow(Matrix m, int loc) {
-	for(int x = 0; x < m.getRows(); x++) {
-		values[loc+x] = m.getRow(x);
+	if(!(loc < 0 || loc+m.getRows() >= rows))
+		for(int x = 0; x < m.getRows(); x++) {
+			values[loc+x] = m.getRow(x);
+		}
+	else {
+		std::cout << "Error: trying to set rows " << loc << " - " << loc+m.getRows() << " in matrix, which is out of bounds" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 }
 
 //Replaces a section of columns of the Matrix with m starting at loc
 void Matrix::setCol(Matrix m, int loc) {
-	for(int y = 0; y < m.getCols(); y++) {
-		for(int x = 0; x < rows; x++) {
-			values[x][y+loc] = m.at(x, loc);
+	if(!(loc < 0 || loc+m.getCols() >= cols))
+		for(int y = 0; y < m.getCols(); y++) {
+			for(int x = 0; x < rows; x++) {
+				values[x][y+loc] = m.at(x, loc);
+			}
 		}
+	else {
+		std::cout << "Error: trying to set columns " << loc << " - " << loc+m.getCols() << " in matrix, which is out of bounds" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 }
 
