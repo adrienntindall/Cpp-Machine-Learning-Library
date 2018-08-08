@@ -95,7 +95,7 @@ Matrix Matrix::set(int x, int y, double val) {
 		values[x][y] = val;
 	else
 		std::cout << "Error: position " << x << ", " << y << " is out of bounds of the matrix." << std::endl; 
-	return *this;
+	std::exit(EXIT_FAILURE);
 }
 
 //Sets the row at the specified position loc to the value contained in r
@@ -180,10 +180,11 @@ Matrix Matrix::addCol(double* c, int loc) {
 Matrix Matrix::addRow(Matrix m, int loc) {
 	if(cols != m.getCols()) {
 		std::cout << "Column mismatch when appending rows" << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	else if(loc < 0 || loc > rows) {
 		std::cout << "Trying to append row at position " << loc << ". Value is out of bound" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 	int mLen = m.getRows();
 	double** newVal = new double*[rows + mLen];
@@ -206,10 +207,11 @@ Matrix Matrix::addRow(Matrix m, int loc) {
 Matrix Matrix::addCol(Matrix m, int loc) {
 	if(rows != m.getRows()) {
 		std::cout << "Row mismatch when appending columns" << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	else if(loc < 0 || loc > rows) {
-		std::cout << "Trying to append row at position " << loc << ". Value is out of bound" << std::endl;
+		std::cout << "Trying to append column at position " << loc << ". Value is out of bound" << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 	Matrix t = transpose();
 	int mLen = m.getCols();
@@ -233,7 +235,7 @@ Matrix Matrix::addCol(Matrix m, int loc) {
 Matrix Matrix::reshape(int row, int col) {
 	if(rows*cols != row*col) {
 		std::cout << "Matrix of size " << rows*cols << " can not be reshapen to size " << row*col << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	else {
 		double* temp = new double[rows*cols];
@@ -289,7 +291,7 @@ Matrix Matrix::getCol(int start, int end) {
 double Matrix::at(int x, int y) {
 	if(x < 0 || y < 0 || x >= rows || y >= cols) {
 		std::cout << "Error: position (" << x << ", " << y << ") is out of range of the matrix." << std::endl;
-		return 0;
+		std::exit(EXIT_FAILURE);
 	}
 	return values[x][y];
 }
@@ -343,10 +345,11 @@ double sum(Matrix m) {
 double Matrix::det() {
 	if(!isSquare()) {
 		std::cout << "Error: cannot take the determinate of a non-square matrix." << std::endl;
-		return 0;
+		std::exit(EXIT_FAILURE);
 	}
 	if(rows < 2) {
 		std::cout << "Error: cannot take the determinate of a 1 x 1 matrix." << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 	if(rows == 2) {
 		return at(0, 0)*at(1,1) - at(0, 1)*at(1, 0);
@@ -373,12 +376,12 @@ Matrix Matrix::transpose() {
 Matrix Matrix::inverse() {
 	if(!isSquare()) {
 		std::cout << "Error: cannot take the inverse of a non-square matrix." << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	double d = det();
 	if(d == 0) {
 		std::cout << "Error: cannot take the inverse of a matrix where the determinate is 0" << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	d = 1/d;
 	Matrix m = Matrix(rows, cols);
@@ -395,11 +398,11 @@ Matrix Matrix::inverse() {
 Matrix Matrix::minor(int row, int col) {
 	if(rows == 1 || cols == 1) {
 		std::cout << "Error: trying to take the minor of a vector." << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	if(row < 0 || col < 0 || row >= rows || col >= cols) {
 		std::cout << "Error: trying to take the minor centered at position (" << row << ", " << col << "), which is out of bounds" << std::endl;
-		return *this;
+		std::exit(EXIT_FAILURE);
 	}
 	Matrix m = Matrix(rows-1, cols-1);
 	for(int x = 0; x < m.getRows(); x++) {

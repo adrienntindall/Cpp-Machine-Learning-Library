@@ -5,8 +5,8 @@
 
 Matrix Matrix::operator+(const Matrix& m) const {
 	if(rows != m.rows || cols != m.cols) {
-		std::cout << "Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
-		return Matrix(rows, cols, values);
+		std::cout << "Error: Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
+		std::exit(EXIT_FAILURE);
 	}
 	double* temp = new double[rows*cols];
 	int n = 0;
@@ -22,7 +22,7 @@ Matrix Matrix::operator+(const Matrix& m) const {
 Matrix Matrix::operator-(const Matrix& m) const {
 	if(rows != m.rows || cols != m.cols) {
 		std::cout << "Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
-		return Matrix(rows, cols, values);
+		std::exit(EXIT_FAILURE);
 	}
 	double* temp = new double[rows*cols];
 	int n = 0;
@@ -38,7 +38,7 @@ Matrix Matrix::operator-(const Matrix& m) const {
 Matrix Matrix::operator*(const Matrix& m) const {
 	if(cols != m.rows) {
 		std::cout << "Can't multiply matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
-		return Matrix(rows, cols, values);
+		std::exit(EXIT_FAILURE);
 	}
 	double** temp = new double*[rows];
 	for(int x = 0; x < rows; x++) {

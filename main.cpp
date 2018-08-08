@@ -4,18 +4,17 @@
 #include "GeneticAlgorithm.h"
 #include <iostream>
 #include <math.h>
+#include <time.h>
 
 using namespace std;
 
 int main() {
-	const int len = 9;
+	const int len = 1000000;
 	double* data = new double[len];
 	for(int x = 0; x < len; x++) {
-		data[x] = -x;
+		data[x] = x%18;
 	}
-	Matrix m(3, 3, data);
-	m.print();
-	m.toFile("m");
-	Matrix n("m");
-	n.print();
+	Matrix m(10, 2, data);
+	(m+~m).print();
+	
 }
