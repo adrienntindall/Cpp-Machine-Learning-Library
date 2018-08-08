@@ -376,6 +376,23 @@ double Matrix::det() {
 	return d;
 }
 
+//Returns the trace of a square matrix
+double Matrix::trace() {
+	if(!isSquare()) {
+		std::cout << "Error: cannot take the trace of a non-square matrix." << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+	if(rows < 2) {
+		std::cout << "Error: cannot take the trace of a 1 x 1 matrix." << std::endl;
+		std::exit(EXIT_FAILURE);
+	}
+	double t = 0;
+	for(int x = 0; x < rows; x++) {
+		t += at(x, x);
+	}
+	return t;
+}
+
 //Returns the transpose of the Matrix
 Matrix Matrix::transpose() {
 	Matrix m = Matrix(cols, rows);

@@ -52,6 +52,7 @@ class Matrix {
 		bool isSquare();
 		double sum();
 		double det();
+		double trace();
 		Matrix transpose();
 		Matrix inverse();
 		Matrix minor(int r, int c);
