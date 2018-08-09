@@ -166,4 +166,14 @@ namespace Metagross {
 			}
 		}
 	}
+	
+	int KMeans::predict(point p) {
+		int best = 0;
+		double dis = 999999;
+		for(int x = 0; x < c; x++) {
+			double cdist = std::min(dis, calcDist(p, clusters[x]));
+			best = dis == cdist ? best : x;
+		}
+		return best;
+	}
 }
