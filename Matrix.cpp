@@ -449,14 +449,13 @@ namespace Metagross {
 			std::cout << "Error: trying to take the minor centered at position (" << row << ", " << col << "), which is out of bounds" << std::endl;
 			std::exit(EXIT_FAILURE);
 		}
-		Matrix m = Matrix(rows-1, cols-1);
-		for(int x = 0; x < m.getRows(); x++) {
-			for(int y = 0; y < m.getCols(); y++) {
-				int xval = (x < row) ? x : x + 1;
-				int yval = (y < col) ? y : y + 1;
-				m.set(x, y, at(xval, yval));
+		double** temp = new double*[rows-1];
+		for(int x = 0; x < rows-1; x++) {
+			temp[x] = new double[cols-1];
+			for(int y = 0; y < cols-1; y++) {
+				temp[x][y] = values[(x < row) ? x : x + 1][(y < col) ? y : y + 1];
 			}
 		}
-		return m;
+		return Matrix(rows-1, cols-1, temp);
 	}
 }
