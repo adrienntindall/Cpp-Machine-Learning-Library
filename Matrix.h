@@ -26,6 +26,7 @@ namespace Metagross {
 			
 			//Modifier functions
 			Matrix set(int x, int y, double val);
+			void iset(int x, int y, double val); //inplace set function
 			void setRow(double* r, int loc);
 			void setCol(double* c, int loc);
 			void setRow(Matrix r, int loc);
@@ -62,7 +63,6 @@ namespace Metagross {
 			Matrix operator+(const Matrix& m) const;
 			Matrix operator-(const Matrix& m) const;
 			Matrix operator*(const Matrix& m) const;
-			//Matrix operator=(const Matrix& m);
 			
 			Matrix operator+(const int& x) const;
 			Matrix operator-(const int& x) const;

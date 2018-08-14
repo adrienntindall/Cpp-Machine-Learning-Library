@@ -92,14 +92,26 @@ namespace Metagross {
 
 	//Sets the value of cell (x, y) with val and returns the matrix
 	Matrix Matrix::set(int x, int y, double val) {
-		if(!(x < 0 || y < 0 || x >= rows || y >= cols))
+		if(!(x < 0 || y < 0 || x >= rows || y >= cols)) {
 			values[x][y] = val;
+			return *this;
+		}
 		else {
 			std::cout << "Error: position " << x << ", " << y << " is out of bounds of the matrix." << std::endl; 
 			std::exit(EXIT_FAILURE);
 		}
 	}
 
+	void Matrix::iset(int x, int y, double val) {
+		if(!(x < 0 || y < 0 || x >= rows || y >= cols)) {
+			values[x][y] = val;
+		}
+		else {
+			std::cout << "Error: position " << x << ", " << y << " is out of bounds of the matrix." << std::endl; 
+			std::exit(EXIT_FAILURE);
+		}
+	}
+	
 	//Sets the row at the specified position loc to the value contained in r
 	void Matrix::setRow(double* r, int loc) {
 		if(!(loc < 0 || loc >= rows))
