@@ -382,11 +382,13 @@ namespace Metagross {
 			std::exit(EXIT_FAILURE);
 		}
 		if(rows == 2) {
-			return at(0, 0)*at(1,1) - at(0, 1)*at(1, 0);
+			return values[0][0]*values[1][1] - values[1][0]*values[0][1];
 		}
 		double d = 0;
+		int n = 1;
 		for(int x = 0; x < cols; x++) {
-			d += pow(-1, x)*at(0, x)*(minor(0, x).det());
+			d += n*values[0][x]*(minor(0, x).det());
+			n*=-1;
 		}
 		return d;
 	}
@@ -403,7 +405,7 @@ namespace Metagross {
 		}
 		double t = 0;
 		for(int x = 0; x < rows; x++) {
-			t += at(x, x);
+			t += values[x][x];
 		}
 		return t;
 	}
@@ -459,5 +461,12 @@ namespace Metagross {
 			}
 		}
 		return Matrix(rows-1, cols-1, temp);
+	}
+	
+	Matrix Matrix::diagonal() {
+		Matrix m(rows, cols);
+		for(int x = 0; x < std::min(rows, cols); x++) 
+			m.set(x, x, values[x][x]);
+		return m;
 	}
 }

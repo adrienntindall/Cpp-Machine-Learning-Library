@@ -6,7 +6,7 @@
 
 namespace Metagross {
 	class NeuralNet {
-		private:
+		protected:
 			Matrix* net;
 			Matrix* theta;
 			int layers;
