@@ -87,6 +87,8 @@ namespace Metagross {
 
 	//Destructor
 	Matrix::~Matrix() {
+		for(int x = 0; x < rows; x++) 
+			delete[] values[x];
 		delete[] values;
 	}
 
