@@ -30,4 +30,21 @@ namespace Metagross {
 		Matrix m = Matrix(rows, cols);
 		return m+1;
 	}
+	
+	double sigmoid(double x) {
+		return 1/(1 + exp(-x));
+	}
+
+	Matrix sigmoid(Matrix x) {
+		x.map(sigmoid);
+		return x;
+	}
+	
+	double* randomize(int length) {
+		double* r = new double[length];
+		for(int x = 0; x < length; x++) {
+			r[x] = rand();
+		}
+		return r;
+	}
 }

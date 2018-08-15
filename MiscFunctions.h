@@ -13,7 +13,8 @@ namespace Metagross {
 
 	//Misc. math functions
 	double sigmoid(double x);
-
+	Matrix sigmoid(Matrix x);
+	
 	//Misc. utility functions
 	double* randomize(int length);
 
