@@ -73,10 +73,38 @@ namespace Metagross {
 	}
 	
 	Matrix Autoencoder::encode(Matrix m) {
-		
+		if(!(m.isVector())) {
+			std::cout << "Error: trying to encode a non vector. Maybe you meant to use train(Matrix X) instead?" << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		if(m.getCols() != 1) {
+			m = ~m;
+		}
+		if(m.getRows() != theta[0].getCols()) {
+			std::cout << "Error: trying to encode data that is " << m.getRows() << " in length, when it needs to be " << theta[0].getCols() << " in length." << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		for(int x = 0; x < encLayer-1; x++) {
+			m = (~sigmoid(m.addRow(ones(1, 1), 0)*theta[x]));
+		}
+		return m;
 	}
 	
 	Matrix Autoencoder::decode(Matrix m) {
-		
+		if(!(m.isVector())) {
+			std::cout << "Error: trying to decode a non vector." << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		if(m.getCols() != 1) {
+			m = ~m;
+		}
+		if(m.getRows() != theta[encLayer].getCols()) {
+			std::cout << "Error: trying to decode data that is " << m.getRows() << " in length, when it needs to be " << theta[encLayer].getCols() << " in length." << std::endl;
+			exit(EXIT_FAILURE);
+		}
+		for(int x = encLayer; x < layers-1; x++) {
+			m = (~sigmoid(m.addRow(ones(1, 1), 0)*theta[x]));
+		}
+		return m;
 	}
 }
