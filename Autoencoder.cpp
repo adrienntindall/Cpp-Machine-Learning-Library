@@ -51,8 +51,25 @@ namespace Metagross {
 		}
 	}
 	
+	~Autoencoder() {
+		delete theta;
+		delete net;
+	}
+	
 	void Autoencoder::train(Matrix target) {
-		
+		if(target.getRows() != net[0].getRows()) {
+			if(target.getCols() != net[0].getRows()) {
+				std::cout << "Error: neither dimension of input matches the size of the input layer (auto encoder)." << std::endl;
+				exit(EXIT_FAILURE);
+			}
+			else {
+				target = ~target;
+			}
+		}
+		for(int x = 0; x < target.getCols(); x++) {
+			forwardPropagate(target.getCol(x));
+			backPropagate(target.getCol(x));
+		}
 	}
 	
 	Matrix Autoencoder::encode(Matrix m) {

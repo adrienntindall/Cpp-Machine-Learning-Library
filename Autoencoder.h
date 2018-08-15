@@ -15,6 +15,9 @@ namespace Metagross {
 			Autoencoder(std::string file);
 			Autoencoder(int layers, int* nodeAmt);
 			
+			//Destructor
+			~Autoencoder();
+			
 			//Train function
 			void train(Matrix target);
 			
