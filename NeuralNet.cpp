@@ -9,6 +9,8 @@ namespace Metagross {
 		theta = new Matrix[layers-1];
 		net = new Matrix[2];
 		theta[0] = Matrix(2, 1);
+		net[0] = Matrix(2, 1);
+		net[1] = Matrix(1, 1);
 		lambda = 0;
 	}
 
@@ -22,6 +24,9 @@ namespace Metagross {
 		theta = new Matrix[layers];
 		for(int x = 1; x < layers; x++) {
 			theta[x-1] = Matrix(nodeAmt[x], nodeAmt[x-1] + 1, randomize(nodeAmt[x]*nodeAmt[x-1]));
+		}
+		for(int x = 0; x < layers; x++) {
+			net[x] = Matrix(nodeAmt[x], 1);
 		}
 		lambda = 0;
 	}
