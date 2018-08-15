@@ -42,7 +42,7 @@ namespace Metagross {
 		if(!(X.isVector())) {
 			std::cout << "Error: trying to forward propagate a non vector. Maybe you meant to use train(Matrix X) instead?" << std::endl;
 			exit(EXIT_FAILURE);
-		}j
+		}
 		if(X.getCols() != 1) {
 			X = ~X;
 		}
@@ -64,9 +64,8 @@ namespace Metagross {
 			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
 		}
 		for(int x = 0; x < layers-1; x++) {
-			Delta[x] += delata[x+1]*~net[x];
+			Delta[x] += delta[x+1]*~net[x];
 		}
-		
 		delete delta;
 	}
 

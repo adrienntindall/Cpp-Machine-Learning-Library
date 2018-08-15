@@ -66,6 +66,8 @@ namespace Metagross {
 			Matrix operator*(const Matrix& m) const;
 			Matrix operator&(const Matrix& m) const; //Element wise multiplication
 			
+			Matrix operator+=(const Matrix& m) const;
+			
 			Matrix operator+(const int& x) const;
 			Matrix operator-(const int& x) const;
 			Matrix operator*(const int& x) const;

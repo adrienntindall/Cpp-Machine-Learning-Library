@@ -8,7 +8,7 @@ namespace Metagross {
 	class NeuralNet {
 		protected:
 			Matrix* net;
-			Matrix* theta
+			Matrix* theta;
 			Matrix* Delta;
 			int layers;
 			double lambda;
