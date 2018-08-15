@@ -25,6 +25,9 @@ namespace Metagross {
 			void forwardPropigate(Matrix X);
 			void backPropigate(Matrix y);
 			
+			//Accessor Functions
+			
+			
 			//Other functions
 			void print();
 			void save();
