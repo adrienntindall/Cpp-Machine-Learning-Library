@@ -1,4 +1,5 @@
 #include "Autoencoder.h"
+#include "MiscFunctions.h"
 #include <iostream>
 #include <algorithm>
 
@@ -41,7 +42,7 @@ namespace Metagross {
 		encLayer = 1;
 		int mn = nodeAmt[1];
 		for(int x = 1; x < layers-1; x++) {
-			if(std::min(mn, nodeAmt[x] != mn) {
+			if(std::min(mn, nodeAmt[x]) != mn) {
 				mn = nodeAmt[x];
 				encLayer = x;
 			}
@@ -51,9 +52,10 @@ namespace Metagross {
 		}
 	}
 	
-	~Autoencoder() {
+	Autoencoder::~Autoencoder() {
 		delete theta;
 		delete net;
+		delete Delta;
 	}
 	
 	void Autoencoder::train(Matrix target) {
@@ -67,8 +69,8 @@ namespace Metagross {
 			}
 		}
 		for(int x = 0; x < target.getCols(); x++) {
-			forwardPropagate(target.getCol(x));
-			backPropagate(target.getCol(x));
+			forwardPropigate(target.getCol(x, x+1));
+			backPropigate(target.getCol(x, x+1));
 		}
 	}
 	

@@ -8,7 +8,8 @@ namespace Metagross {
 	class NeuralNet {
 		protected:
 			Matrix* net;
-			Matrix* theta;
+			Matrix* theta
+			Matrix* Delta;
 			int layers;
 			double lambda;
 			
@@ -30,7 +31,7 @@ namespace Metagross {
 			void save();
 			void save(std::string file);
 			double cost(Matrix X, Matrix y, int m);
-			
+			Matrix predict(Matrix X);
 			
 	};
 }

@@ -12,6 +12,7 @@ namespace Metagross {
 		net[0] = Matrix(2, 1);
 		net[1] = Matrix(1, 1);
 		lambda = 0;
+		Delta = new Matrix[layers-1];
 	}
 
 	NeuralNet::NeuralNet(std::string file) {
@@ -34,13 +35,14 @@ namespace Metagross {
 	NeuralNet::~NeuralNet() {
 		delete theta;
 		delete net;
+		delete Delta;
 	}
 
 	void NeuralNet::forwardPropigate(Matrix X) {
 		if(!(X.isVector())) {
 			std::cout << "Error: trying to forward propagate a non vector. Maybe you meant to use train(Matrix X) instead?" << std::endl;
 			exit(EXIT_FAILURE);
-		}
+		}j
 		if(X.getCols() != 1) {
 			X = ~X;
 		}
@@ -56,7 +58,16 @@ namespace Metagross {
 	}
 
 	void NeuralNet::backPropigate(Matrix y) {
+		Matrix* delta = new Matrix[layers];
+		delta[layers-1] = net[layers-1] - y;
+		for(int x = layers-2; x > 0; x--) {
+			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
+		}
+		for(int x = 0; x < layers-1; x++) {
+			Delta[x] += delata[x+1]*~net[x];
+		}
 		
+		delete delta;
 	}
 
 	void NeuralNet::print() {
@@ -75,15 +86,18 @@ namespace Metagross {
 		//ak3 = sigmoid(Theta2*[ones(m, 1) sigmoid(Theta1*X')']')';
 		//J = sum(sum(-y.*log(ak3)-(1-y).*log(1-ak3)))/m + lambda*(sum(sum(Theta1(:, 2:end).^2)) + sum(sum(Theta2(:, 2:end).^2)))/(2*m);
 		double J = 0;
-		Matrix a = X;
-		for(int x = 0; x < layers-1; x++) {
-			a = sigmoid(theta[x]*(~a));
-		}
-		//fix later; meant to be akl where l is the second to last layer
+		forwardPropigate(X);
+		Matrix a = net[layers-1];
 		for(int x = 0; x < layers; x++) {
 			J = sum(-y&log(a) - (1 - y)&log(1-a))/m;
 		
 		}
+		//fix & finish later
 		return J;
+	}
+	
+	Matrix NeuralNet::predict(Matrix X) {
+		forwardPropigate(X);
+		return net[layers-1];
 	}
 }
