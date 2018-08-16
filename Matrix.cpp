@@ -74,6 +74,7 @@ namespace Metagross {
 
 	//Copy constructor
 	Matrix::Matrix(const Matrix& m) {
+		std::cout << "Copy start" << std::endl;
 		rows = m.rows;
 		cols = m.cols;
 		values = new double*[rows];
@@ -104,6 +105,7 @@ namespace Metagross {
 		}
 	}
 
+	//inplace set
 	void Matrix::iset(int x, int y, double val) {
 		if(!(x < 0 || y < 0 || x >= rows || y >= cols)) {
 			values[x][y] = val;
@@ -332,6 +334,7 @@ namespace Metagross {
 
 	//Prints all the values in the Matrix
 	void Matrix::print() {
+		std::cout << rows << " x " << cols << std::endl;
 		for(int x = 0; x < rows; x++) {
 			for(int y = 0; y < cols; y++) {
 				std::cout << values[x][y] << " ";

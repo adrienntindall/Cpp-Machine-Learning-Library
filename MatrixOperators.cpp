@@ -4,6 +4,22 @@
 #include <stdexcept>
 
 namespace Metagross {
+	Matrix& Matrix::operator=(const Matrix& m) {
+		if(*this != m) {
+			rows = m.rows;
+			cols = m.cols;
+			values = new double*[rows];
+			for(int x = 0; x < rows; x++) {
+				values[x] = new double[cols];
+				for(int y = 0; y < cols; y++) {
+					values[x][y] = m.values[x][y];
+				}
+			}
+		}
+		return *this;
+		
+	}
+	
 	Matrix Matrix::operator+(const Matrix& m) const {
 		if(rows != m.rows || cols != m.cols) {
 			std::cout << "Error: Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
@@ -280,5 +296,9 @@ namespace Metagross {
 			break;
 		}
 		return eq;
+	}
+	
+	bool Matrix::operator!=(const Matrix& m) const {
+		return !(*this==m);
 	}
 }

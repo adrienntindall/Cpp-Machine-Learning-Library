@@ -61,6 +61,8 @@ namespace Metagross {
 			Matrix diagonal();
 			
 			//Operators
+			Matrix& operator=(const Matrix& m);
+			
 			Matrix operator+(const Matrix& m) const;
 			Matrix operator-(const Matrix& m) const;
 			Matrix operator*(const Matrix& m) const;
@@ -88,6 +90,7 @@ namespace Metagross {
 			Matrix operator-() const; //returns all values * -1
 			
 			bool operator==(const Matrix& m) const;
+			bool operator!=(const Matrix& m) const;
 	};
 
 	//More operators...

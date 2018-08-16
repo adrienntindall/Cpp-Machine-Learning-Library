@@ -18,8 +18,7 @@ int main() {
 	Matrix x = Matrix(3, 3, randomize(9));
 	x.print();
 	std::cout << "BM 1" << std::endl;
-	Matrix z = (m + 2);
-	z.print();
+	x = (m + 2);
 	std::cout << "BM 2" << std::endl;
 	x.print();
 
