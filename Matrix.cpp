@@ -221,7 +221,7 @@ namespace Metagross {
 		int n = 0;
 		int p = 0;
 		for(int x = 0; x < rows + mLen; x++) {
-			newVal[x] = new double[cols];
+			//newVal[x] = new double[cols];
 			if(x >= loc && x < loc+mLen) {
 				newVal[x] = m.getRow(p);
 				p++;
@@ -289,13 +289,17 @@ namespace Metagross {
 	}
 
 	double* Matrix::getRow(int x) {
-		return values[x];
+		double* data = new double[cols];
+		for(int z = 0; z < cols; z++) {
+			data[z] = values[x][z];
+		}
+		return data;
 	}
 
 	double* Matrix::getCol(int x) {
 		double* data = new double[rows];
 		for(int z = 0; z < rows; z++) {
-			data[z] = at(z, x);
+			data[z] = values[z][x];
 		}
 		return data;
 	}

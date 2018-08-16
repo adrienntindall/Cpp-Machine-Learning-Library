@@ -43,7 +43,7 @@ namespace Metagross {
 	double* randomize(int length) {
 		double* r = new double[length];
 		for(int x = 0; x < length; x++) {
-			r[x] = rand();
+			r[x] = (double)rand() / RAND_MAX;
 		}
 		return r;
 	}

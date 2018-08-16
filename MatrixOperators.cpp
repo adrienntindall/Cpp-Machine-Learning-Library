@@ -267,4 +267,18 @@ namespace Metagross {
 	Matrix Matrix::operator-() const {
 		return Matrix(rows, cols, values) * -1;
 	}
+	
+	bool Matrix::operator==(const Matrix& m) const {
+		bool eq = true;
+		while(eq) {
+			for(int x = 0; x < rows; x++) {
+				for(int y = 0; y < cols; y++) {
+					if(values[x][y] == m.values[x][y]) continue;
+					else eq = false;
+				}
+			}
+			break;
+		}
+		return eq;
+	}
 }

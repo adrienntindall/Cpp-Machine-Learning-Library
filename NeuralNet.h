@@ -7,11 +7,14 @@
 namespace Metagross {
 	class NeuralNet {
 		protected:
-			Matrix* net;
 			Matrix* theta;
+			Matrix* net;
 			Matrix* Delta;
 			int layers;
+			int m;
+			double alpha;
 			double lambda;
+			
 			
 		public:
 			//Constructors
@@ -25,6 +28,8 @@ namespace Metagross {
 			//Modifier functions
 			void forwardPropigate(Matrix X);
 			void backPropigate(Matrix y);
+			void updateGradient();
+			void train(Matrix X, Matrix y);
 			
 			//Other functions
 			void print();
