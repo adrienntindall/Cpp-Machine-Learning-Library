@@ -21,6 +21,9 @@ namespace Metagross {
 			//Copy constructor
 			Matrix(const Matrix& m);
 			
+			//Move Constructor
+			Matrix(Matrix&& m);
+			
 			//Destructor
 			~Matrix();
 			
