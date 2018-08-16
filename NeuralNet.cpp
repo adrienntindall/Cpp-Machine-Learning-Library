@@ -25,15 +25,15 @@ namespace Metagross {
 		theta = new Matrix[layers-1];
 		for(int x = 1; x < layers; x++) {
 			theta[x-1] = Matrix(nodeAmt[x], nodeAmt[x-1] + 1, randomize(nodeAmt[x]*(nodeAmt[x-1]+1)));
-			//m.print();
 			theta[x-1].print();
 		}
 		
 		net = new Matrix[layers];
 		for(int x = 0; x < layers; x++) {
-			net[x] = Matrix(nodeAmt[x], 1);
+			net[x] = Matrix(nodeAmt[x], 1, randomize(nodeAmt[x]));
+			net[x].print();
 		}
-		Delta = new Matrix[layers-1];
+		Delta = new Matrix[layers];
 		for(int x = 0; x < layers; x++) {
 			Delta[x] = Matrix(1, 1);
 		}
@@ -52,13 +52,12 @@ namespace Metagross {
 	}
 
 	void NeuralNet::forwardPropigate(Matrix X) {
-		Matrix m = X;
 		if(!(X.isVector())) {
 			std::cout << "Error: trying to forward propagate a non vector. Maybe you meant to use train(Matrix X) instead?" << std::endl;
 			exit(EXIT_FAILURE);
 		}
 		if(X.getCols() != 1) {
-			m = ~m;
+			X = ~X;
 		}
 		if(X.getRows() != theta[0].getCols()-1) {
 			std::cout << "Error: trying to forward propagate data that is " << X.getRows() << " in length, when it needs to be " << theta[0].getCols() << " in length." << std::endl;
@@ -67,26 +66,32 @@ namespace Metagross {
 		std::cout << "Benchmark 7" << std::endl;
 		for(int x = 0; x < layers-1; x++) {
 			net[x] = X;
-			//X = (~sigmoid(X.addRow(ones(1, 1), 0)*theta[x]));
+			net[x].print();
+			//X = (~sigmoid(theta[x]*X.addRow(ones(1, 1), 0)));
 			//m = m.addRow(ones(1, 1), 0);
-			std::cout << "Benchmark 13" << std::endl;
-			(m*theta[x]).print();
+			X.print();
+			X = (X.addRow(ones(1, 1), 0));
+			X = theta[x]*X;
+			X.print();
 		}
-		net[layers-1] = m;
+		net[layers-1] = X;
 		std::cout << "Benchmark 9" << std::endl;
 	}
 
 	void NeuralNet::backPropigate(Matrix y) {
 		Matrix* delta = new Matrix[layers];
 		delta[layers-1] = net[layers-1] - y;
+		std::cout << "Benchmark 21" << std::endl;
 		for(int x = layers-2; x > 0; x--) {
 			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
 		}
+		std::cout << "Benchmark 22" << std::endl;
 		for(int x = 0; x < layers-1; x++) {
 			Delta[x] += delta[x+1]*~net[x];
 		}
 		delete[] delta;
 		delta = NULL;
+		std::cout << "Benchmark 23" << std::endl;
 	}
 
 	void NeuralNet::updateGradient() {
@@ -99,6 +104,7 @@ namespace Metagross {
 		if(X.getRows() != net[0].getRows()) {
 			if(X.getCols() != net[0].getRows()) {
 				std::cout << "Error: neither dimension of input matches the size of the input layer (neural net)." << std::endl;
+				std::cout << "Input is " << X.getRows() << " x " << X.getCols() << " and input layer is size " << net[0].getRows() << std::endl;
 				exit(EXIT_FAILURE);
 			}
 			else {

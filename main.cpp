@@ -12,18 +12,6 @@
 using namespace Metagross;
 
 int main() {
-	Matrix m(3, 3, randomize(9));
-	m.print();
-	std::cout << std::endl;
-	Matrix x = Matrix(3, 3, randomize(9));
-	x.print();
-	std::cout << "BM 1" << std::endl;
-	x = (m + 2);
-	std::cout << "BM 2" << std::endl;
-	x.print();
-
-	std::cout << "Success" << std::endl;
-	/*
 	Matrix X = Matrix(2, 5000);
 	Matrix y = Matrix(1, 5000);
 	for(int x = 0; x < 5000; x++) {
@@ -52,5 +40,4 @@ int main() {
 		out.set(0, 0, double(c));
 		(nn.predict(in)-out).print();
 	}
-	*/
 }

@@ -20,6 +20,14 @@ namespace Metagross {
 		
 	}
 	
+	Matrix& Matrix::operator=(Matrix&& m) {
+		using std::swap;
+		swap(rows, m.rows);
+		swap(cols, m.cols);
+		swap(values, m.values);
+		return *this;
+	}
+	
 	Matrix Matrix::operator+(const Matrix& m) const {
 		if(rows != m.rows || cols != m.cols) {
 			std::cout << "Error: Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;

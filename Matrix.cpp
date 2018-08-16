@@ -74,7 +74,6 @@ namespace Metagross {
 
 	//Copy constructor
 	Matrix::Matrix(const Matrix& m) {
-		std::cout << "Copy start" << std::endl;
 		rows = m.rows;
 		cols = m.cols;
 		values = new double*[rows];
