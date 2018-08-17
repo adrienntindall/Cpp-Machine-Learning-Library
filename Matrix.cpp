@@ -326,7 +326,7 @@ namespace Metagross {
 	Matrix Matrix::getCol(int start, int end) {
 		Matrix m = Matrix(getRows(), end-start);
 		for(int x = start; x < end; x++) {
-			m.setCol(getCol(x), x);
+			m.setCol(getCol(x), x-start);
 		}
 		return m;
 	}
