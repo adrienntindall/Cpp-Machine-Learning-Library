@@ -22,13 +22,18 @@ namespace Metagross {
 	
 	Matrix& Matrix::operator=(Matrix&& m) {
 		using std::swap;
-		swap(rows, m.rows);
-		swap(cols, m.cols);
 		swap(values, m.values);
+		rows = m.rows;
+		cols = m.cols;
+		m.rows = 0;
+		m.cols = 0;
+		m.values = nullptr;
 		return *this;
 	}
 	
 	Matrix Matrix::operator+(const Matrix& m) const {
+		if(m.rows == 1 && m.cols == 1) 
+			return *this + m.values[0][0];
 		if(rows != m.rows || cols != m.cols) {
 			std::cout << "Error: Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
 			std::exit(EXIT_FAILURE);
@@ -43,8 +48,10 @@ namespace Metagross {
 	}
 
 	Matrix Matrix::operator-(const Matrix& m) const {
+		if(m.rows == 1 && m.cols == 1) 
+			return *this - m.values[0][0];
 		if(rows != m.rows || cols != m.cols) {
-			std::cout << "Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
+			std::cout << "Can't subtract matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
 			std::exit(EXIT_FAILURE);
 		}
 		double** temp = new double*[rows];
@@ -162,6 +169,7 @@ namespace Metagross {
 	Matrix Matrix::operator*(const int& m) const {
 		double** temp = new double*[rows];
 		for(int x = 0; x < rows; x++) {
+			temp[x] = new double[cols];
 			for(int y = 0; y < cols; y++)
 				temp[x][y] = values[x][y] * m;
 		}
@@ -170,8 +178,8 @@ namespace Metagross {
 
 	Matrix Matrix::operator/(const int& m) const {
 		double** temp = new double*[rows];
-		
 		for(int x = 0; x < rows; x++) {
+			temp[x] = new double[cols];
 			for(int y = 0; y < cols; y++)
 				temp[x][y] = values[x][y] / m;
 		}

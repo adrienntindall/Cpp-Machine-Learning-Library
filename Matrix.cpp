@@ -86,11 +86,12 @@ namespace Metagross {
 	}
 
 	//Move Constructor
-	Matrix::Matrix(Matrix&& m) {
-		using std::swap;
-		swap(rows, m.rows);
-		swap(cols, m.cols);
-		swap(values, m.values);
+	Matrix::Matrix(Matrix&& m) : values(m.values) {
+		rows = m.rows;
+		cols = m.cols;
+		m.rows = 0;
+		m.cols = 0;
+		m.values = nullptr;
 	}
 	
 	//Destructor

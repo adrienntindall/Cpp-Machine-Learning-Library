@@ -67,11 +67,18 @@ namespace Metagross {
 		for(int x = 0; x < layers-1; x++) {
 			net[x] = X;
 			net[x].print();
-			//X = (~sigmoid(theta[x]*X.addRow(ones(1, 1), 0)));
+			X = ~(sigmoid(theta[x]*X.addRow(ones(1, 1), 0)));
 			//m = m.addRow(ones(1, 1), 0);
 			X.print();
 			X = (X.addRow(ones(1, 1), 0));
+			X.print();
+			theta[x].print();
+			(theta[x]*X).print();
 			X = theta[x]*X;
+			X.print();
+			X = sigmoid(X);
+			X.print();
+			X = ~X;
 			X.print();
 		}
 		net[layers-1] = X;
@@ -81,12 +88,13 @@ namespace Metagross {
 	void NeuralNet::backPropigate(Matrix y) {
 		Matrix* delta = new Matrix[layers];
 		delta[layers-1] = net[layers-1] - y;
+		delta[layers-1].print();
 		std::cout << "Benchmark 21" << std::endl;
 		for(int x = layers-2; x > 0; x--) {
 			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
 		}
 		std::cout << "Benchmark 22" << std::endl;
-		for(int x = 0; x < layers-1; x++) {
+		for(int x = 0; x < layers-2; x++) {
 			Delta[x] += delta[x+1]*~net[x];
 		}
 		delete[] delta;
@@ -95,9 +103,11 @@ namespace Metagross {
 	}
 
 	void NeuralNet::updateGradient() {
+		std::cout << "Benchmark 30" << std::endl;
 		for(int x = 0; x < layers-1; x++) {
-			theta[x] = theta[x] - alpha*Delta[x]/m;
+			theta[x] = theta[x] - ((alpha*Delta[x])/m);
 		}
+		std::cout << "Benchmark 31" << std::endl;
 	}
 	
 	void NeuralNet::train(Matrix X, Matrix y) {
