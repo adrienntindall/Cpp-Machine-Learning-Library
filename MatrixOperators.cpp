@@ -292,8 +292,8 @@ namespace Metagross {
 		return Matrix(rows, cols, temp);
 	}
 
-	Matrix Matrix::operator~() const {
-		return Matrix(rows, cols, values).transpose();
+	Matrix Matrix::operator~() {
+		return (*this).transpose();
 	}
 
 	Matrix Matrix::operator-() const {

@@ -90,7 +90,7 @@ namespace Metagross {
 			Matrix operator*(const float& x) const;
 			Matrix operator/(const float& x) const;
 			
-			Matrix operator~() const; //returns transpose
+			Matrix operator~(); //returns transpose
 			Matrix operator-() const; //returns all values * -1
 			
 			bool operator==(const Matrix& m) const;

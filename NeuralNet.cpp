@@ -25,20 +25,18 @@ namespace Metagross {
 		theta = new Matrix[layers-1];
 		for(int x = 1; x < layers; x++) {
 			theta[x-1] = Matrix(nodeAmt[x], nodeAmt[x-1] + 1, randomize(nodeAmt[x]*(nodeAmt[x-1]+1)));
-			theta[x-1].print();
 		}
 		
 		net = new Matrix[layers];
 		for(int x = 0; x < layers; x++) {
 			net[x] = Matrix(nodeAmt[x], 1, randomize(nodeAmt[x]));
-			net[x].print();
 		}
 		Delta = new Matrix[layers];
 		for(int x = 0; x < layers; x++) {
-			Delta[x] = Matrix(1, 1);
+			Delta[x] = Matrix(1, nodeAmt[x] + 1);
 		}
 		lambda = 0;
-		alpha = 1;
+		alpha = .1;
 		
 	}
 
@@ -63,51 +61,30 @@ namespace Metagross {
 			std::cout << "Error: trying to forward propagate data that is " << X.getRows() << " in length, when it needs to be " << theta[0].getCols() << " in length." << std::endl;
 			exit(EXIT_FAILURE);
 		}
-		std::cout << "Benchmark 7" << std::endl;
 		for(int x = 0; x < layers-1; x++) {
 			net[x] = X;
-			net[x].print();
 			X = ~(sigmoid(theta[x]*X.addRow(ones(1, 1), 0)));
-			//m = m.addRow(ones(1, 1), 0);
-			X.print();
-			X = (X.addRow(ones(1, 1), 0));
-			X.print();
-			theta[x].print();
-			(theta[x]*X).print();
-			X = theta[x]*X;
-			X.print();
-			X = sigmoid(X);
-			X.print();
-			X = ~X;
-			X.print();
 		}
 		net[layers-1] = X;
-		std::cout << "Benchmark 9" << std::endl;
 	}
 
 	void NeuralNet::backPropigate(Matrix y) {
 		Matrix* delta = new Matrix[layers];
 		delta[layers-1] = net[layers-1] - y;
-		delta[layers-1].print();
-		std::cout << "Benchmark 21" << std::endl;
 		for(int x = layers-2; x > 0; x--) {
 			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
 		}
-		std::cout << "Benchmark 22" << std::endl;
-		for(int x = 0; x < layers-2; x++) {
-			Delta[x] += delta[x+1]*~net[x];
+		for(int x = 0; x < layers-1; x++) {
+			Delta[x] += delta[x+1]*~sigmoid(net[x].addRow(ones(1,1), 0));
 		}
 		delete[] delta;
 		delta = NULL;
-		std::cout << "Benchmark 23" << std::endl;
 	}
 
 	void NeuralNet::updateGradient() {
-		std::cout << "Benchmark 30" << std::endl;
 		for(int x = 0; x < layers-1; x++) {
 			theta[x] = theta[x] - ((alpha*Delta[x])/m);
 		}
-		std::cout << "Benchmark 31" << std::endl;
 	}
 	
 	void NeuralNet::train(Matrix X, Matrix y) {
@@ -135,12 +112,9 @@ namespace Metagross {
 			exit(EXIT_FAILURE);
 		}
 		m=X.getCols();
-		std::cout << "Benchmark 4" << std::endl;
 		for(int x = 0; x < X.getCols(); x++) {
 			forwardPropigate(X.getCol(x, x+1));
-			std::cout << "Benchmark 5" << std::endl;
 			backPropigate(y.getCol(x, x+1));
-			std::cout << "Benchmark 6" << std::endl;
 			updateGradient();
 		}
 	}
