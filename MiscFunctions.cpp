@@ -1,5 +1,6 @@
 #include <math.h>
 #include <algorithm>
+#include <iostream>
 #include "MiscFunctions.h"
 
 namespace Metagross {

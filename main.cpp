@@ -12,9 +12,10 @@
 using namespace Metagross;
 
 int main() {
-	Matrix X = Matrix(2, 5000);
-	Matrix y = Matrix(1, 5000);
-	for(int x = 0; x < 5000; x++) {
+	int m = 500;
+	Matrix X = Matrix(2, m);
+	Matrix y = Matrix(1, m);
+	for(int x = 0; x < m; x++) {
 		int a = rand()%2;
 		int b = rand()%2;
 		bool c = (a != b);
@@ -31,13 +32,15 @@ int main() {
 	Matrix in(2, 1);
 	Matrix out(1, 1);
 	
-	for(int x = 0; x < 9999; x++) {
+	for(int x = 0; x < 200; x++) {
 		int a = rand()%2;
 		int b = rand()%2;
 		bool c = (a != b);
 		in.set(0, 0, double(a));
 		in.set(1, 0, double(b));
 		out.set(0, 0, double(c));
+		std::cout << "Score of test number " << x << ": ";
 		(nn.predict(in)-out).print();
+		std::cout << std::endl;
 	}
 }

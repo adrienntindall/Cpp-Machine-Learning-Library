@@ -76,7 +76,7 @@ namespace Metagross {
 				for(int z = 0; z < cols; z++) 
 					temp[x][y] += values[x][z]*m.values[z][y];
 			}
-		}	
+		}
 		return Matrix(rows, m.cols, temp);
 	}
 	
@@ -132,18 +132,16 @@ namespace Metagross {
 		}
 	}
 	
-	Matrix Matrix::operator+=(const Matrix& m) const {
+	Matrix& Matrix::operator+=(const Matrix& m) {
 		if(rows != m.rows || cols != m.cols) {
 			std::cout << "Error: Can't add matrices of size " << rows << " x " << cols << " and " << m.rows << " x " << m.cols << std::endl;
 			std::exit(EXIT_FAILURE);
 		}
-		double** temp = new double*[rows];
 		for(int x = 0; x < rows; x++) {
-			temp[x] = new double[cols];
 			for(int y = 0; y < cols; y++) 
-				temp[x][y] = values[x][y] + m.values[x][y];
+				values[x][y] += m.values[x][y];
 		}
-		return Matrix(rows, cols, temp);
+		return *this;
 	}
 	
 	Matrix Matrix::operator+(const int& m) const {

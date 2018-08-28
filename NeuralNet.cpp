@@ -13,7 +13,7 @@ namespace Metagross {
 		net[1] = Matrix(1, 1);
 		lambda = 0;
 		Delta = new Matrix[layers-1];
-		alpha = 1;
+		alpha = .1;
 	}
 
 	NeuralNet::NeuralNet(std::string file) {
@@ -36,7 +36,7 @@ namespace Metagross {
 			Delta[x] = Matrix(1, nodeAmt[x] + 1);
 		}
 		lambda = 0;
-		alpha = .1;
+		alpha = .01;
 		
 	}
 
@@ -75,7 +75,8 @@ namespace Metagross {
 			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
 		}
 		for(int x = 0; x < layers-1; x++) {
-			Delta[x] += delta[x+1]*~sigmoid(net[x].addRow(ones(1,1), 0));
+			Delta[x] = Delta[x] + delta[x+1]*~sigmoid(net[x].addRow(ones(1,1), 0));
+			Delta[x].print();
 		}
 		delete[] delta;
 		delta = NULL;
