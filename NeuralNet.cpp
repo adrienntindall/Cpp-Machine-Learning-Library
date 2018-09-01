@@ -75,8 +75,7 @@ namespace Metagross {
 			delta[x] = (~theta[x]*delta[x+1]) & net[x] & (1 - net[x]);
 		}
 		for(int x = 0; x < layers-1; x++) {
-			Delta[x] = Delta[x] + delta[x+1]*~sigmoid(net[x].addRow(ones(1,1), 0));
-			Delta[x].print();
+			Delta[x] = Delta[x] + delta[x+1]*~(net[x].addRow(ones(1,1), 0));
 		}
 		delete[] delta;
 		delta = NULL;
